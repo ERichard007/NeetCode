@@ -25,6 +25,7 @@ int main(){
     while (ss >> num){
         myArray.push_back(num);
     }
+    cout << "working" << endl;
     bool theSolution = mySolution.hasDuplicate(myArray);
     cout << (theSolution == 1 ? "True" : "False") << endl;
     return -1;
