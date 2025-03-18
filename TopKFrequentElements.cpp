@@ -1,6 +1,6 @@
 #include <vector>
 #include <map>
-#include <algorithm>
+#include <queue>
 #include <iostream>
 using namespace std;
 
@@ -11,24 +11,29 @@ class Solution {
             for (const int& num : nums){
                 dict[num]++;
             }
-            sort(dict.begin(), dict.end(), compare);
 
+            priority_queue<pair<int, int>> maxHeap;
             for (const auto& pair : dict){
-                cout << pair.first << ":" << pair.second << " " << endl; 
+                maxHeap.push(make_pair(pair.second, pair.first));
             }
-            return nums;
-        }
-    private:
-        bool compare (pair<int,int> &a, pair<int,int> &b){
-            return a.second < b.second;
+
+            vector<int> solutionVector;
+            while (k != 0)
+            {
+                solutionVector.push_back(maxHeap.top().second);
+                maxHeap.pop();
+                k--;
+            }
+            
+            return solutionVector;
         }
     };
 
 int main() {
-    vector<int> nums = {1};
+    vector<int> nums = {1,2,2,3,3,3};
     int k = 2;
-    Solution mySolution;
 
+    Solution mySolution;
     vector<int> solution = mySolution.topKFrequent(nums, k);
     
     for (const int& num : solution){
