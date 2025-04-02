@@ -41,17 +41,20 @@ class Solution:
 
         while i < len(s):
             char = s[i]
+
+            num = str()
             while (char != "#"):
                 num += char
                 i+=1
                 char = s[i]
 
             num = int(num)
+
             cut = i+1
             decodedList.append(s[cut:cut+num])
 
             i = cut + num
-
+            
         return decodedList
 
 
