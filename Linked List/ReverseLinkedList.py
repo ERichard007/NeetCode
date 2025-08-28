@@ -8,19 +8,22 @@ class ListNode:
 class Solution:
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
 
-        lastVal = None
-        nextVal = None
+        nextNode = None
+        lastNode = None
         currentNode = head
+
         while (currentNode != None):
-            nextVal = currentNode.next
-            currentNode.next = lastVal
-            lastVal = currentNode.val
-            currentNode = nextVal
-            
-        return lastVal
+            nextNode = currentNode.next
+            currentNode.next = lastNode
+            lastNode = currentNode
+            currentNode = nextNode
+
+        return lastNode
         
 
 mySolution = Solution()
+
+
 
 head = [0,1,2,3]
 
