@@ -1,6 +1,41 @@
+from typing import Optional
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
 class Solution:
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+
+        lastVal = None
+        nextVal = None
+        currentNode = head
+        while (currentNode != None):
+            nextVal = currentNode.next
+            currentNode.next = lastVal
+            lastVal = currentNode.val
+            currentNode = nextVal
+            
+        return lastVal
         
 
 mySolution = Solution()
-print(mySolution.reverseList())
+
+head = [0,1,2,3]
+
+myListNodeList = []
+for n in range(len(head)):
+    integer = head[n]
+    nextNum = head[n+1] if n != len(head)-1 else None
+    newListNode = ListNode(integer, nextNum)
+
+    myListNodeList.append(newListNode)
+
+for node in myListNodeList:
+    print("val: " + str(node.val) + " next: " + str(node.next))
+
+myNewListNodeList = mySolution.reverseList(myListNodeList[0])
+
+for node in myNewListNodeList:
+    print("val: " + str(node.val) + " next: " + str(node.next))
