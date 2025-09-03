@@ -9,26 +9,31 @@ class TreeNode:
         self.left = left
 
 class Solution:
-    MAX_D = 0
+    def heighOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        
+        return 1 + max((self.heighOfBinaryTree(root.left), self.heighOfBinaryTree(root.right)))
 
     def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
         if not root:
-            return -1
+            return 0
 
-        leftHeight = self.diameterOfBinaryTree(root.left) + 1
-        rightHeight = self.diameterOfBinaryTree(root.right) + 1
+        leftHeight = self.heighOfBinaryTree(root.left)
+        rightHeight = self.heighOfBinaryTree(root.right)
+        currentNodeDiameter = leftHeight + rightHeight 
 
-        self.MAX_D = max(leftHeight+rightHeight, self.MAX_D)
+        print("Current root: " + str(root.val) + " diameter: " + str(currentNodeDiameter))
 
-        print("root value: " + str(root.val) + " left height: " + str(leftHeight) + " right height: " + str(rightHeight) + " max depth: " + str(self.MAX_D))
+        subTree = max(self.diameterOfBinaryTree(root.left), self.diameterOfBinaryTree(root.right), currentNodeDiameter)
 
-        return max(leftHeight,rightHeight)
-        
+        print("Current root: " + str(root.val) + " subTreeVal: " + str(subTree) + " currentNodeDiameter: " + str(currentNodeDiameter))
+
+        return max(currentNodeDiameter, subTree)
 
 mySolution = Solution()
 
-tree = TreeNode(1,None,TreeNode(2,TreeNode(3,TreeNode(5)), TreeNode(4)))
+tree = (TreeNode(1,None,TreeNode(3,TreeNode(4,TreeNode(6),TreeNode(7)),TreeNode(5,TreeNode(8),TreeNode(9)))))
 
-mySolution.diameterOfBinaryTree(tree)
+print(mySolution.diameterOfBinaryTree(tree))
 
-print(mySolution.MAX_D)
