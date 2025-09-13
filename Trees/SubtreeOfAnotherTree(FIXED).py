@@ -9,46 +9,50 @@ class TreeNode:
 
 class Solution:   
 
-    def leftDFS(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+    def DFS(self, root: Optional[TreeNode], target: int) -> Optional[TreeNode]:
         if not root:
             return None
-        elif root.left == None:
+        elif root.val == target:
             return root
         
-        return self.leftDFS(root.left)
+        leftSearch = self.DFS(root.left, target)
+        rightSearch = self.DFS(root.right, target)
 
-    def rightDFS(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        return leftSearch or rightSearch
+    
+    def FindDepth(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
         if not root:
             return None
-        elif root.right == None:
+        elif not root.left and not root.right:
             return root
         
-        return self.rightDFS(root.right)
+        leftSearch = self.FindDepth(root.left)
+        rightSearch = self.FindDepth(root.right)
+
+        return leftSearch or rightSearch
 
     def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
-        if not root:
-            return False
 
         if root.val != subRoot.val:
-            searchLeftTree = self.isSubtree(root.left, subRoot)
-            searchRightTree = self.isSubtree(root.right, subRoot)
+            leftSearch = self.DFS(root.left, subRoot.val)
+            rightSearch = self.DFS(root.right, subRoot.val)
 
-            return searchLeftTree or searchRightTree
+            root = leftSearch or rightSearch
 
-        leftSubrootDFS = self.leftDFS(subRoot)
-        rightSubrootDFS = self.rightDFS(subRoot)
-        leftTreeDFS = self.leftDFS(root.left)
-        rightTreeDFS = self.rightDFS(root.right)
+            if not root:
+                return False
 
-        print("ROOT: " + str(root.val))
-        print(leftSubrootDFS.val)
-        print(rightSubrootDFS.val)
-        print(leftTreeDFS.val)
-        print(rightTreeDFS.val)
+        subRootLeftDFS = self.FindDepth(subRoot.left)
+        subRootRightDFS = self.FindDepth(subRoot.right)
+        treeLeftDFS = self.FindDepth(root.left)
+        TreeRightDFS = self.FindDepth(root.right)
 
-        print("******************")
+        print(subRootLeftDFS.val)
+        print(treeLeftDFS.val)
+        print(subRootRightDFS.val)
+        print(TreeRightDFS.val)
 
-        return (leftSubrootDFS.val == leftTreeDFS.val and rightSubrootDFS.val == rightTreeDFS.val)
+        return (subRootLeftDFS.val == treeLeftDFS.val and subRootRightDFS.val == TreeRightDFS.val)
     
 mySolution = Solution()
 
