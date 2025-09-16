@@ -20,16 +20,16 @@ class Solution:
 
         return leftSearch or rightSearch
     
-    def FindDepth(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
-        if not root:
-            return None
-        elif not root.left and not root.right:
-            return root
-        
-        leftSearch = self.FindDepth(root.left)
-        rightSearch = self.FindDepth(root.right)
+    def IsSameTree(self, root: TreeNode, subroot: TreeNode) -> bool:
+        if not root and not subroot:
+            return True
+        elif (not root or not subroot) or (root.val != subroot.val):
+            return False
 
-        return leftSearch or rightSearch
+        leftward = self.IsSameTree(root.left, subroot.left)
+        rightward = self.IsSameTree(root.right, subroot.right)
+
+        return (leftward and rightward)
 
     def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
 
@@ -41,18 +41,22 @@ class Solution:
 
             if not root:
                 return False
+            
+        testRoot = self.IsSameTree(root, subRoot)
+        leftRoot = root.left
+        rightRoot = root.right
 
-        subRootLeftDFS = self.FindDepth(subRoot.left)
-        subRootRightDFS = self.FindDepth(subRoot.right)
-        treeLeftDFS = self.FindDepth(root.left)
-        TreeRightDFS = self.FindDepth(root.right)
+        while not testRoot and (leftRoot or rightRoot):
+            
+            left = self.IsSameTree(leftRoot, subRoot)
+            right = self.IsSameTree(rightRoot, subRoot)
 
-        print(subRootLeftDFS.val)
-        print(treeLeftDFS.val)
-        print(subRootRightDFS.val)
-        print(TreeRightDFS.val)
+            leftRoot = leftRoot.left if leftRoot != None else None
+            rightRoot = rightRoot.right if rightRoot != None else None
 
-        return (subRootLeftDFS.val == treeLeftDFS.val and subRootRightDFS.val == TreeRightDFS.val)
+            testRoot = left or right
+
+        return testRoot
     
 mySolution = Solution()
 
@@ -63,8 +67,12 @@ Tree2 = TreeNode(1,TreeNode(2,TreeNode(4,TreeNode(6)),TreeNode(5)),TreeNode(3))
 SubTree2 = TreeNode(2,TreeNode(4),TreeNode(5)) 
 
 Tree3 = TreeNode(3,TreeNode(4,TreeNode(1),TreeNode(2)),TreeNode(5))
-SubTree3 = TreeNode(4,TreeNode(1),TreeNode(2)) 
+SubTree3 = TreeNode(4,TreeNode(1,TreeNode(1)),TreeNode(2)) 
+
+Tree4 = TreeNode(1,TreeNode(1))
+SubTree4 = TreeNode(1)
 
 print(mySolution.isSubtree(Tree, SubTree)) #true
 print(mySolution.isSubtree(Tree2, SubTree2)) #false
 print(mySolution.isSubtree(Tree3, SubTree3)) #false
+print(mySolution.isSubtree(Tree4, SubTree4)) #true
