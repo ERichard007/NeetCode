@@ -1,0 +1,22 @@
+from typing import List
+import heapq
+
+class Solution:
+    def lastStoneWeight(self, stones: List[int]) -> int:
+        stones = [-s for s in stones] #[-6,-4,-3,-2,-2]
+        heapq.heapify(stones)
+
+        while len(stones) > 1:
+            stone1 = heapq.heappop(stones)
+            stone2 = heapq.heappop(stones)
+
+            if(stone1 < stone2):
+                heapq.heappush(stones, stone1-stone2)
+
+        stones.append(0)
+        return abs(stones[0])
+    
+stones = [2,3,6,2,4]
+mySolution = Solution()
+
+print(mySolution.lastStoneWeight(stones))
